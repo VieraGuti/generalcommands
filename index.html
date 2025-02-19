@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑GLOBAL COMMANDS👑</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: url('https://media0.giphy.com/media/3ov9k1173PdfJWRsoE/giphy.gif') no-repeat center center fixed;
+            background-size: cover;
+            color: #ff00ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            backdrop-filter: blur(8px);
+        }
+        .container {
+            width: 85%;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+        }
+        h1 {
+            text-align: center;
+            font-size: 36px;
+        }
+        .category-select {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .category-select button {
+            padding: 12px 20px;
+            margin: 5px;
+            font-size: 18px;
+            border: 2px solid #ff00ff;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #ff00ff;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        .category-select button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        #info-container {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            color: #ff00ff;
+            font-size: 16px;
+        }
+        #info-container p {
+            margin: 10px 0;
+        }
+        #searchInput {
+            padding: 8px;
+            font-size: 16px;
+            border: 2px solid #ff00ff;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #ff00ff;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .command {
+            margin: 15px 0;
+            padding: 10px;
+            border: 2px solid #ff00ff;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 8px;
+        }
+        .command-title {
+            font-weight: bold;
+        }
+        .command-details {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👑GENERAL COMMANDS👑<h1>
+        <!-- Campo de búsqueda para filtrar categorías y comandos -->
+        <input type="text" id="searchInput" placeholder="Search for commands...">
+        <div class="category-select" id="categorySelect">
+            <!-- Categorías dinámicas se insertarán aquí -->
+        </div>
+        <div id="info-container">
+            <!-- Información de la categoría seleccionada aparecerá aquí -->
+            <p>Select a category to see the commands.</p>
+        </div>
+    </div>
+
+    <script>
+        const categories = {
+            "Banning Items": [
+                {
+                    title: "Completely remove an item from the server, making it unobtainable.",
+                    command: "`banitem \"itemshortname\" all`",
+                    example: "`banitem rifle.ak all`"
+                },
+                {
+                    title: "Completely unban an item and will return it to normal.",
+                    command: "`unbanitem \"itemshortname\"`",
+                    example: "`unbanitem rifle.ak all`"
+                },
+                {
+                    title: "Ban an item from being crafted, while allowing it to still be researched etc.",
+                    command: "`banitem \"itemshortname\" NoCrafting`",
+                    example: "`banitem rifle.ak NoCrafting`"
+                },
+                {
+                    title: "Remove an item from the Tech Tree, while allowing things below it on the Tech Tree to still be researched.",
+                    command: "`banitem \"itemshortname\" TechTreeBypass`",
+                    example: "`banitem rifle.ak TechTreeBypass`"
+                },
+                {
+                    title: "Completely remove an item from the Tech Tree, and block the research of things below it on the Tech Tree.",
+                    command: "`banitem \"itemshortname\" TechTreeBlockpath`",
+                    example: "`banitem rifle.ak TechTreeBlockpath`"
+                },
+                {
+                    title: "Completely remove an item and all items below it from the Tech Tree.",
+                    command: "`banitem \"itemshortname\" NoTechTree`",
+                    example: "`banitem rifle.ak NoTechTree`"
+                },
+                {
+                    title: "Remove the ability for an item to be researched from a Research Table.",
+                    command: "`banitem \"itemshortname\" ResearchedTableBlocked`",
+                    example: "`banitem rifle.ak ResearchedTableBlocked`"
+                },
+                {
+                    title: "Remove the ability for an item to be researched from anywhere.",
+                    command: "`banitem \"itemshortname\" NoResearch`",
+                    example: "`banitem rifle.ak NoResearch`"
+                },
+                {
+                    title: "Stop an item from spawning in all crates, boxes and remove it from all inventories, storage containers and backpacks.",
+                    command: "`banitem \"itemshortname\" NoItemSpawn`",
+                    example: "`banitem rifle.ak NoItemSpawn`"
+                },
+                {
+                    title: "Stop an item's Blueprint from spawning in all crates, boxes etc.",
+                    command: "`banitem \"itemshortname\" NoBlueprintSpawn`",
+                    example: "`banitem rifle.ak NoBlueprintSpawn`"
+                },
+                {
+                    title: "Stop both an item and its Blueprints from spawning at all.",
+                    command: "`banitem \"itemshortname\" NoSpawn`",
+                    example: "`banitem rifle.ak NoSpawn`"
+                },
+                {
+                    title: "List the current set of banned items for the server.",
+                    command: "`listbanneditems`",
+                    example: "`listbanneditems`"
+                },
+                {
+                    title: "Unban all items from the server.",
+                    command: "`clearbanneditems`",
+                    example: "`clearbanneditems`"
+                }
+            ],
+			
+			"Spawning Commands": [
+    {
+        title: "Spawn vending machine",
+        command: "`spawn vendingmachine.deployed (x,y,z)`",
+        example: "`spawn vendingmachine.deployed 123 45 678`"
+    },
+    {
+        title: "Spawn recycler",
+        command: "`spawn recycler (x,y,z)`",
+        example: "`spawn recycler 100 20 300`"
+    },
+    {
+        title: "Spawn heli crate",
+        command: "`spawn heli_crate (x,y,z)`",
+        example: "`spawn heli_crate 150 20 350`"
+    },
+    {
+        title: "Spawn Bradley crate",
+        command: "`spawn bradley_crate (x,y,z)`",
+        example: "`spawn bradley_crate 200 25 400`"
+    },
+    {
+        title: "Spawn locked crate",
+        command: "`spawn codelock (x,y,z)`",
+        example: "`spawn codelock 250 30 450`"
+    },
+    {
+        title: "Spawn Elite crate",
+        command: "`spawn crate_elite (x,y,z)`",
+        example: "`spawn crate_elite 300 35 500`"
+    },
+    {
+        title: "Spawn Supply Drop",
+        command: "`spawn supply_drop (x,y,z)`",
+        example: "`spawn supply_drop 350 40 550`"
+    },
+    {
+        title: "Spawn military crate",
+        command: "`spawn crate_normal (x,y,z)`",
+        example: "`spawn crate_normal 400 45 600`"
+    },
+    {
+        title: "Spawn regular crate",
+        command: "`spawn crate_normal_2 (x,y,z)`",
+        example: "`spawn crate_normal_2 450 50 650`"
+    },
+    {
+        title: "Spawn tool box",
+        command: "`spawn crate_tools (x,y,z)`",
+        example: "`spawn crate_tools 500 55 700`"
+    },
+    {
+        title: "Spawn small wooden box",
+        command: "`spawn woodbox_deployed (x,y,z)`",
+        example: "`spawn woodbox_deployed 550 60 750`"
+    },
+    {
+        title: "Spawn Food crate",
+        command: "`spawn crate_normal_2_food (x,y,z)`",
+        example: "`spawn crate_normal_2_food 600 65 800`"
+    },
+    {
+        title: "Spawn rations box",
+        command: "`spawn foodbox (x,y,z)`",
+        example: "`spawn foodbox 650 70 850`"
+    },
+    {
+        title: "Spawn medical crate",
+        command: "`spawn crate_normal_2_medical (x,y,z)`",
+        example: "`spawn crate_normal_2_medical 700 75 900`"
+    },
+    {
+        title: "Spawn Blue barrel",
+        command: "`spawn loot_barrel_1 (x,y,z)`",
+        example: "`spawn loot_barrel_1 750 80 950`"
+    },
+    {
+        title: "Spawn White Barrel",
+        command: "`spawn loot_barrel_2 (x,y,z)`",
+        example: "`spawn loot_barrel_2 800 85 1000`"
+    },
+    {
+        title: "Spawn large underwater crate",
+        command: "`spawn crate_underwater_advanced (x,y,z)`",
+        example: "`spawn crate_underwater_advanced 850 90 1050`"
+    },
+    {
+        title: "Spawn small underwater crate",
+        command: "`spawn crate_underwater_basic (x,y,z)`",
+        example: "`spawn crate_underwater_basic 900 95 1100`"
+    },
+    {
+        title: "Spawn an item",
+        command: "`entity.spawnitem \"shortname\" (x,y,z)`",
+        example: "`entity.spawnitem \"rifle.ak\" 950 100 1150`"
+    },
+    {
+        title: "Enable the spawning of recyclers at the Dome.",
+        command: "`monumentspawns.enableconfig \"dome_recycler\"`",
+        example: "`monumentspawns.enableconfig \"dome_recycler\"`"
+    },
+    {
+        title: "Enable the spawning of recyclers at the Large Fishing Village.",
+        command: "`monumentspawns.enableconfig \"fishing_village_large_recycler\"`",
+        example: "`monumentspawns.enableconfig \"fishing_village_large_recycler\"`"
+    },
+    {
+        title: "Enable the spawning of recyclers at the Small Fishing Villages.",
+        command: "`monumentspawns.enableconfig \"fishing_village_small_recycler\"`",
+        example: "`monumentspawns.enableconfig \"fishing_village_small_recycler\"`"
+    },
+    {
+        title: "Enable the spawning of recyclers at the Large Oil Rig.",
+        command: "`monumentspawns.enableconfig \"oilrig_large_recycler\"`",
+        example: "`monumentspawns.enableconfig \"oilrig_large_recycler\"`"
+    },
+    {
+        title: "Enable the spawning of recyclers at the Small Oil Rig.",
+        command: "`monumentspawns.enableconfig \"oilrig_small_recycler\"`",
+        example: "`monumentspawns.enableconfig \"oilrig_small_recycler\"`"
+    },
+    {
+        title: "Enable the spawning of recyclers at the Stables (Large Barn) and Ranch.",
+        command: "`monumentspawns.enableconfig \"stables_recycler\"`",
+        example: "`monumentspawns.enableconfig \"stables_recycler\"`"
+    },
+    {
+        title: "Enable the spawning of recyclers on the Cargo Ship (both variants).",
+        command: "`monumentspawns.enableconfig \"cargoship_recycler\"`",
+        example: "`monumentspawns.enableconfig \"cargoship_recycler\"`"
+    },
+    {
+        title: "Force spawns recyclers at Large Oil Rig.",
+        command: "`monumentspawns.forcespawnconfig \"oilrig_large_recycler\"`",
+        example: "`monumentspawns.forcespawnconfig \"oilrig_large_recycler\"`"
+    }
+],
+"Modifier Commands": [
+    {
+        title: "Print all the items which have modifiers, and the modifiers themselves to the server console.",
+        command: "`modifiers.listallmodifiers`",
+        example: "`modifiers.listallmodifiers`"
+    },
+    {
+        title: "Print all modifiers for an item to the server console",
+        command: "`modifiers.listmodifiers \"itemshortname\"`",
+        example: "`modifiers.listmodifiers rock`"
+    },
+    {
+        title: "Removes all modifiers from all items.",
+        command: "`modifiers.clearmodifiers all`",
+        example: "`modifiers.clearmodifiers all`"
+    },
+    {
+        title: "Remove a specific modifier from an item or remove all modifiers from an item.",
+        command: "`modifiers.clearmodifier \"itemshortname\" [modifier]`",
+        example: [
+            "`modifiers.clearmodifier rock tool`",
+            "`modifiers.clearmodifier rock all`"
+        ]
+    },
+    {
+        title: "Scale the \"collection\" of specific items.",
+        command: "`modifiers.setmodifier \"itemshortname\" collection scale`",
+        example: "`modifiers.setmodifier stones collection 2`"
+    },
+    {
+        title: "Scale the \"gather\" of specific items.",
+        command: "`modifiers.setmodifier \"itemshortname\" gather scale`",
+        example: "`modifiers.setmodifier \"wood\" gather 3`"
+    },
+    {
+        title: "Scale the \"tool\" modifier of a specific item.",
+        command: "`modifiers.setmodifier \"itemshortname\" tool scale`",
+        example: "`modifiers.setmodifier \"hatchet\" tool 2`"
+    },
+    {
+        title: "Scale the amount of \"loot\" for specific items.",
+        command: "`modifiers.setmodifier \"itemshortname\" loot scale`",
+        example: "`modifiers.setmodifier \"scrap\" loot 3`"
+    },
+    {
+        title: "Set the cook speed of a specific item.",
+        command: "`modifiers.setmodifier \"itemshortname\" cookspeed scale`",
+        example: "`modifiers.setmodifier \"metal.ore\" cookspeed 3`"
+    },
+    {
+        title: "Scale the smelting output of specific items.",
+        command: "`modifiers.setmodifier \"itemshortname\" cookamount scale`",
+        example: "`modifiers.setmodifier \"hq.metal.ore\" cookamount 3`"
+    },
+    {
+        title: "Set Workbench Level",
+        command: "`modifiers.setmodifier \"ItemName\" workbenchlevel \"value\"`",
+        example: "`modifiers.setmodifier \"rifle.ak\" workbenchlevel 1`"
+    },
+    {
+        title: "Crafting Time",
+        command: "`modifiers.setmodifier \"ItemName\" crafttime \"value\"`",
+        example: "`modifiers.setmodifier tool.cupboard crafttime 10`"
+    },
+    {
+        title: "Scale how much \"fuel\" furnaces use.",
+        command: "`craft.furnaceusagemultiplier scale`",
+        example: "`craft.furnaceusagemultiplier 2`"
+    },
+    {
+        title: "Scale how fast all items cook.",
+        command: "`craft.itemcookspeedmultiplier scale`",
+        example: "`craft.itemcookspeedmultiplier 2`"
+    }
+],
+"Kit Commands": [
+    {
+        title: "List all active kits on the server in the console.",
+        command: "`kit list`",
+        example: "`kit list`"
+    },
+    {
+        title: "Add an item to a kit, or create a new kit if no kits with your chosen name exist.",
+        command: "`kit add \"kitname\" \"itemshortname\" \"amount\" \"[condition]\" \"[container]`",
+        example: "`kit add NewKit1 rifle.ak 1 1 Belt`"
+    },
+    {
+        title: "Remove an item from the kit, deletes it if empty.",
+        command: "`kit remove \"kitname\" \"id\"`",
+        example: "`kit remove NewKit1 1`"
+    },
+    {
+        title: "Provide info about the given kit.",
+        command: "`kit info \"kitname\"`",
+        example: "`kit info NewKit1`"
+    },
+    {
+        title: "Delete a kit.",
+        command: "`kit delete \"kitname\"`",
+        example: "`kit delete NewKit1`"
+    },
+    {
+        title: "Adds the defined \"kit\" to spawn for all users in the defined \"group\".",
+        command: "`kit edit \"kitname\" addgroup \"[group]\"`",
+        example: "`kit edit NewKit1 addgroup VIP`"
+    },
+    {
+        title: "Give a defined \"kit\" to a defined \"group\" once.",
+        command: "`kit givetogroup \"kitname\" \"[group]\"`",
+        example: "`kit givetogroup NewKit1 VIP`"
+    },
+    {
+        title: "Give a defined \"kit\" to a defined \"player\" once.",
+        command: "`kit givetoplayer \"kitname\" \"id\"`",
+        example: "`kit givetoplayer NewKit1 \"Rust God\"`"
+    },
+    {
+        title: "Give a defined \"kit\" to all players once.",
+        command: "`kit giveall \"kitname\"`",
+        example: "`kit giveall NewKit1`"
+    },
+    {
+        title: "Remove the defined \"kit\" and stop it from spawning for all users in the defined \"group\".",
+        command: "`kit edit \"kitname\" removegroup \"[group]\"`",
+        example: "`kit edit NewKit1 removegroup VIP`"
+    },
+    {
+        title: "Removing a single Item from a kit explained",
+        command: "First run `kit info \"kitname\"`, then remove the item with `kit remove \"kitname\" \"id\"`.",
+        example: [
+            "`kit info NewKit1`",
+            "`kit remove NewKit1 1`"
+        ]
+    }
+],
+
+"Player Commands": [
+    {
+        title: "Grants the target player VIP (Tier 1) Auth Level.",
+        command: "`vipid \"player ID\"`",
+        example: "`vipid \"12345\"`"
+    },
+    {
+        title: "Revoke VIP (Tier 1) Auth Level from the target player.",
+        command: "`removevip \"player ID\"`",
+        example: "`removevip \"12345\"`"
+    },
+    {
+        title: "Grant the target Gamertag/PSN ID Moderator (Tier 2) Auth Level.",
+        command: "`moderatorid \"player ID\"`",
+        example: "`moderatorid \"67890\"`"
+    },
+    {
+        title: "Revoke Moderator (Tier 2) Auth Level from the target player.",
+        command: "`removemoderator \"player ID\"`",
+        example: "`removemoderator \"67890\"`"
+    },
+    {
+        title: "Grant the target Gamertag/PSN ID Admin (Tier 3) Auth Level.",
+        command: "`adminid \"player ID\"`",
+        example: "`adminid \"11223\"`"
+    },
+    {
+        title: "Revoke Admin (Tier 3) Auth Level from the target player.",
+        command: "`removeadmin \"player ID\"`",
+        example: "`removeadmin \"11223\"`"
+    },
+    {
+        title: "Print the current Auth Level for the specified player.",
+        command: "`getauthlevel \"Player ID\"`",
+        example: "`getauthlevel \"12345\"`"
+    },
+    {
+        title: "Prints the Auth Levels for all players on the server.",
+        command: "`getauthlevels`",
+        example: "`getauthlevels`"
+    },
+    {
+        title: "Ban the specified Gamertag/PSN ID from the current server indefinitely.",
+        command: "`banid \"Player ID\"`",
+        example: "`banid \"12345\"`"
+    },
+    {
+        title: "Print a list of all banned players to the console.",
+        command: "`banlist`",
+        example: "`banlist`"
+    },
+    {
+        title: "Un-ban the specified player from the current server.",
+        command: "`unban \"player ID\"`",
+        example: "`unban \"12345\"`"
+    },
+    {
+        title: "Kick all players from the server.",
+        command: "`kickall`",
+        example: "`kickall`"
+    },
+    {
+        title: "Kill all players in the server.",
+        command: "`killallplayer`",
+        example: "`killallplayer`"
+    },
+    {
+        title: "Teleport the chosen Gamertag/PSN ID to a chosen location.",
+        command: "`teleport \"player ID\" (x,y,z)`",
+        example: "`teleport \"12345\" (100,200,300)`"
+    },
+    {
+        title: "Lists the leader and all team members of the team # provided.",
+        command: "`teaminfo \"#\"`",
+        example: "`teaminfo \"1\"`"
+    },
+    {
+        title: "Put the chosen player to sleep. Must be done in-game.",
+        command: "`sleep \"player ID\"`",
+        example: "`sleep \"12345\"`"
+    },
+    {
+        title: "List a specific player's team and teammates.",
+        command: "`relationshipmanager.findplayerteam \"player ID\"`",
+        example: "`relationshipmanager.findplayerteam \"12345\"`"
+    },
+    {
+        title: "Put the chosen player to sleep.",
+        command: "`relationshipmanager.sleeptoggleother \"player ID\"`",
+        example: "`relationshipmanager.sleeptoggleother \"12345\"`"
+    },
+    {
+        title: "Teleport a chosen player to a chosen location.",
+        command: "`teleport \"player ID\" (x,y,z)`",
+        example: "`teleport \"12345\" (100,200,300)`"
+    },
+    {
+        title: "Teleport a player to you",
+        command: "`teleport2me \"player ID\" (x,y,z)`",
+        example: "`teleport2me \"12345\" (100,200,300)`"
+    },
+    {
+        title: "Teleport all players in a grid.",
+        command: "`teleportgrid \"position\" \"spacing\" \"rotation\" \"MaxPerRow\"`",
+        example: "`teleportgrid \"0,0,0\" \"10\" \"0\" \"5\"`"
+    },
+    {
+        title: "Teleport a player to a position with the option to \"PlaceOnGround\".",
+        command: "`teleportpos \"position\" \"player ID\" \"PlaceOnGround\"`",
+        example: "`teleportpos \"0,0,0\" \"12345\" true`"
+    }
+],
+"Event Commands": [
+    {
+        title: "Control the speed of the Cargo Ship. Max 5.",
+        command: "`cargoshipdynamic.cargoship_speed_scale \"int\"`",
+        example: "`cargoshipdynamic.cargoship_speed_scale 3`"
+    },
+    {
+        title: "Control the time taken for the Cargo Ship to leave the map once its event has ended.",
+        command: "`cargoships.egress_duration_minutes \"int\"`",
+        example: "`cargoships.egress_duration_minutes 10`"
+    },
+    {
+        title: "Control the amount of time the Cargo Ship is active on the map for.",
+        command: "`cargoships.event_duration_minutes \"int\"`",
+        example: "`cargoships.event_duration_minutes 30`"
+    },
+    {
+        title: "Toggle the Cargo Ship event as a whole.",
+        command: "`cargoships.event_enabled \"0/1\"`",
+        example: "`cargoships.event_enabled 1`"
+    },
+    {
+        title: "Control how often Code Locked Crates spawn on the Cargo Ship.",
+        command: "`cargoships.loot_round_spacing_minutes \"int\"`",
+        example: "`cargoships.loot_round_spacing_minutes 15`"
+    },
+    {
+        title: "Control how many times Code Locked Crates spawn on the Cargo Ship.",
+        command: "`cargoships.loot_rounds \"int\"`",
+        example: "`cargoships.loot_rounds 3`"
+    },
+    {
+        title: "Toggle scientist spawning on the Cargo Ship.",
+        command: "`cargoships.scientist_onboard_check \"0/1\"`",
+        example: "`cargoships.scientist_onboard_check 1`"
+    },
+    {
+        title: "Force the current Cargo Ship to leave the map, following the value set for egress_duration_minutes.",
+        command: "`cargoships.startegressing`",
+        example: "`cargoships.startegressing`"
+    },
+    {
+        title: "Start the specified event.",
+        command: "`events.triggerevent \"event\"`",
+        example: "`events.triggerevent \"event_cargoship\"`"
+    },
+    {
+        title: "Stop the specified event.",
+        command: "`events.stopevent \"event\"`",
+        example: "`events.stopevent \"event_cargoship\"`"
+    },
+    {
+        title: "Toggle the Bradley APC spawning function.",
+        command: "`bradley.enabled \"0/1\"`",
+        example: "`bradley.enabled 1`"
+    },
+    {
+        title: "Toggle the Bradley Quick-Respawn function.",
+        command: "`bradley.quickrespawn \"0/1\"`",
+        example: "`bradley.quickrespawn 1`"
+    },
+    {
+        title: "Control the amount of time after the Bradley APC is destroyed, that it respawns.",
+        command: "`bradley.respawndelayminutes \"int\"`",
+        example: "`bradley.respawndelayminutes 10`"
+    },
+    {
+        title: "Define the variance at which the Bradley APC spawns.",
+        command: "`bradley.respawndelayvariance \"int\"`",
+        example: "`bradley.respawndelayvariance 5`"
+    },
+    {
+        title: "Set the accuracy of Heli (lower is more accurate).",
+        command: "`heli.bulletaccuracy`",
+        example: "`heli.bulletaccuracy 0.5`"
+    },
+    {
+        title: "Scale the damage of Heli.",
+        command: "`heli.bulletdamagescale`",
+        example: "`heli.bulletdamagescale 1.5`"
+    },
+    {
+        title: "Set the next Chinook Code Locked Crate drop zone to be at the specified monument.",
+        command: "`dropcrate.heli_setdropzone \"monument ID\"`",
+        example: "`dropcrate.heli_setdropzone 123`"
+    },
+    {
+        title: "List the remaining time left on a certain event.",
+        command: "`events.remainingtime \"event\"`",
+        example: "`events.remainingtime \"event_cargoship\"`"
+    },
+    {
+        title: "Control the current cooldown multiplier for the specified event.",
+        command: "`events.cooldowntimemultiplier \"event\" \"multiplier\"`",
+        example: "`events.cooldowntimemultiplier \"event_cargoship\" 0.5`"
+    },
+    {
+        title: "List the current cooldowns for the specified event.",
+        command: "`events.cooldowntime \"event\"`",
+        example: "`events.cooldowntime \"event_cargoship\"`"
+    },
+    {
+        title: "Disable an Event.",
+        command: "`activeevent \"event\" false`",
+        example: "`activeevent \"event_cargoship\" false`"
+    },
+    {
+        title: "List all events that are active on the server.",
+        command: "`events.activeevent`",
+        example: "`events.activeevent`"
+    },
+    {
+        title: "Activate a Special Event on the server.",
+        command: "`events.start_special \"event\"`",
+        example: "`events.start_special \"Xmas\"`"
+    },
+    {
+        title: "Pause a Special Event.",
+        command: "`events.pause_special 1`",
+        example: "`events.pause_special 1`"
+    },
+    {
+        title: "Unpause a Special Event.",
+        command: "`events.pause_special 0`",
+        example: "`events.pause_special 0`"
+    },
+    {
+        title: "Stop a Special Event.",
+        command: "`events.stop_special \"event\"`",
+        example: "`events.stop_special \"Xmas\"`"
+    },
+    {
+        title: "List of Special Events.",
+        command: "`events.list_special`",
+        example: "`events.list_special`"
+    },
+    {
+        title: "Scale damage done to Scarecrows (body damage only).",
+        command: "`halloween.scarecrow_body_dmg_modifier \"int\"`",
+        example: "`halloween.scarecrow_body_dmg_modifier 2`"
+    },
+    {
+        title: "Determine if Scarecrows throw Beancans.",
+        command: "`halloween.scarecrows_throw_beancans 0/1`",
+        example: "`halloween.scarecrows_throw_beancans 1`"
+    },
+    {
+        title: "Set how many presents appear for each player while the Xmas event is active.",
+        command: "`xmas.giftsperplayer \"int\"`",
+        example: "`xmas.giftsperplayer 3`"
+    }
+],
+
+"Entity Commands": [
+    {
+        title: "Destroy all buildings created by the target ID.",
+        command: "`entity.deleteby \"player ID\"`",
+        example: "`entity.deleteby \"12345\"`"
+    },
+    {
+        title: "Obliterate the building you are looking at.",
+        command: "`ent destroybuilding`",
+        example: "`ent destroybuilding`"
+    },
+    {
+        title: "Destroy the chosen entity and check if it has an owner.",
+        command: "`entity.deleteentity \"string\" \"0/1\"`",
+        example: "`entity.deleteentity \"codelock\" 1`"
+    },
+    {
+        title: "Define how long destroyed boats persist (in seconds) before being despawned.",
+        command: "`vehicle.boat_corpse_seconds \"int\"`",
+        example: "`vehicle.boat_corpse_seconds 1800`"
+    },
+    {
+        title: "Define the amount of minutes taken for a horse to die when unattended.",
+        command: "`baseridableanimal.decayminutes \"int\"`",
+        example: "`baseridableanimal.decayminutes 60`"
+    },
+    {
+        title: "Scale production rate of horse dung. Higher is faster.",
+        command: "`baseridableanimal.dungtimescale \"int\"`",
+        example: "`baseridableanimal.dungtimescale 2`"
+    },
+    {
+        title: "Scale tick rate of plant growth.",
+        command: "`server.planttickscale \"int\"`",
+        example: "`server.planttickscale 1`"
+    },
+    {
+        title: "Enable or disable interaction with recyclers.",
+        command: "`CanUseRecycler \"0/1\"`",
+        example: "`CanUseRecycler 1`"
+    },
+    {
+        title: "The rate at which items are recycled. (Lower is faster).",
+        command: "`RecyclerNextRecycleTime \"int\"`",
+        example: "`RecyclerNextRecycleTime 2`"
+    },
+    {
+        title: "The warm up time for the recyclers before they start to recycle.",
+        command: "`RecyclerStartTime \"int\"`",
+        example: "`RecyclerStartTime 5`"
+    },
+    {
+        title: "Delete all of a specified entity.",
+        command: "`Entity.deleteentity \"shortname\" 0`",
+        example: "`Entity.deleteentity codelock 0`"
+    },
+    {
+        title: "Sets the respawn timer when using a Sleeping Bag to the specified time, measured in seconds.",
+        command: "`bagreuseseconds \"int\"`",
+        example: "`bagreuseseconds 600`"
+    },
+    {
+        title: "Sets the respawn timer when using a Bed to the specified time, measured in seconds.",
+        command: "`bedreuseseconds \"int\"`",
+        example: "`bedreuseseconds 900`"
+    }
+],
+"Global Commands": [
+    {
+        title: "Toggle eternal daylight for the player who entered it, regardless of server time.",
+        command: "`dayview \"0/1\"`",
+        example: "`dayview 1`"
+    },
+    {
+        title: "Display the given message into the server chat.",
+        command: "`say \"message\"`",
+        example: "`say \"Welcome to the server!\"`"
+    },
+    {
+        title: "Print the building information for the structure you’re looking at to the console log.",
+        command: "`ent info`",
+        example: "`ent info`"
+    },
+    {
+        title: "Print the player who placed the object you're looking at.",
+        command: "`ent who`",
+        example: "`ent who`"
+    },
+    {
+        title: "Destroy the object you're looking at.",
+        command: "`ent kill`",
+        example: "`ent kill`"
+    },
+    {
+        title: "Unlock the lock you're looking at.",
+        command: "`ent unlock`",
+        example: "`ent unlock`"
+    },
+    {
+        title: "Lock the lock you're looking at.",
+        command: "`ent lock`",
+        example: "`ent lock`"
+    },
+    {
+        title: "Disable/Enable a full magazine when you start with a weapon.",
+        command: "`baseprojectile.fullstartingmagazine \"0/1\"`",
+        example: "`baseprojectile.fullstartingmagazine 1`"
+    },
+    {
+        title: "Toggle infinite ammunition.",
+        command: "`baseprojectile.infiniteammo \"0/1\"`",
+        example: "`baseprojectile.infiniteammo 1`"
+    },
+    {
+        title: "Add the item blueprint to the player’s inventory upon spawning.",
+        command: "`craft.adddefaultblueprint \"shortname\"`",
+        example: "`craft.adddefaultblueprint \"wooden_spear\"`"
+    },
+    {
+        title: "Remove the item blueprint from the list of default items on spawn.",
+        command: "`craft.removedefaultblueprint \"shortname\"`",
+        example: "`craft.removedefaultblueprint \"wooden_spear\"`"
+    },
+    {
+        title: "List the current set of default blueprints for the server.",
+        command: "`craft.listdefaultblueprint`",
+        example: "`craft.listdefaultblueprint`"
+    },
+    {
+        title: "Kill all animals on the server.",
+        command: "`ai.killanimals`",
+        example: "`ai.killanimals`"
+    },
+    {
+        title: "Kill all scientists on the server.",
+        command: "`ai.killscientists`",
+        example: "`ai.killscientists`"
+    },
+    {
+        title: "Toggle the Demolish ability for the Hammer.",
+        command: "`construct.demolishhammer \"0/1\"`",
+        example: "`construct.demolishhammer 1`"
+    },
+    {
+        title: "Toggle the ability to build structures without consuming resources.",
+        command: "`construct.freeconstruction \"0/1\"`",
+        example: "`construct.freeconstruction 1`"
+    },
+    {
+        title: "Toggle the ability to upgrade building blocks without consuming resources.",
+        command: "`construct.freeupgrading \"0/1\"`",
+        example: "`construct.freeupgrading 1`"
+    },
+    {
+        title: "Display the current number of sleeping players on the server.",
+        command: "`servermgr.numsleepingplayers`",
+        example: "`servermgr.numsleepingplayers`"
+    },
+    {
+        title: "Enable this to stop time progression on the server.",
+        command: "`env.progresstime \"0/1\"`",
+        example: "`env.progresstime 1`"
+    },
+    {
+        title: "Set the time to the specified hour (24 hour clock).",
+        command: "`env.time \"int\"`",
+        example: "`env.time 15`"
+    },
+    {
+        title: "Control the relative speed of Furnace cooking. Max 3x.",
+        command: "`craft.itemcookspeedmultiplier scale`",
+        example: "`craft.itemcookspeedmultiplier 2`"
+    },
+    {
+        title: "Scale the default crafting speed. Higher is faster, default is 1.",
+        command: "`craft.basecraftspeed \"int\"`",
+        example: "`craft.basecraftspeed 2`"
+    },
+    {
+        title: "Reset all loot and AIs.",
+        command: "`Spawn.fill_groups`",
+        example: "`Spawn.fill_groups`"
+    },
+    {
+        title: "Print a count of all junk sites in the console log.",
+        command: "`junkpile.getjunkpilecounts`",
+        example: "`junkpile.getjunkpilecounts`"
+    },
+    {
+        title: "Display base upkeep stats on top right of screen.",
+        command: "`ui.showbasestatsui`",
+        example: "`ui.showbasestatsui`"
+    },
+    {
+        title: "Define the chance for scientists to spawn at NPC junkpiles.",
+        command: "`ai.npc_junkpilespawn_chance`",
+        example: "`ai.npc_junkpilespawn_chance 0.1`"
+    },
+    {
+        title: "Define how many NPCs can spawn at junkpiles at the same time.",
+        command: "`ai.npc_max_junkpile_count`",
+        example: "`ai.npc_max_junkpile_count 5`"
+    },
+    {
+        title: "Scale the AI aim cone for targeting.",
+        command: "`attackentity.npc_aimconescale “number”`",
+        example: "`attackentity.npc_aimconescale 1.5`"
+    },
+    {
+        title: "Scale the AI reload and shot time.",
+        command: "`attackentity.npc_attackcooldownscale “number”`",
+        example: "`attackentity.npc_attackcooldownscale 1.2`"
+    },
+    {
+        title: "Scale the AI attack lengths per burst.",
+        command: "`attackentity.npc_attacklengthscale “number”`",
+        example: "`attackentity.npc_attacklengthscale 1.5`"
+    },
+    {
+        title: "Scale the time between AI attack bursts.",
+        command: "`attackentity.npc_attackspacingscale “number”`",
+        example: "`attackentity.npc_attackspacingscale 1`"
+    },
+    {
+        title: "Scale the raw AI damage.",
+        command: "`attackentity.npc_damagescale “number”`",
+        example: "`attackentity.npc_damagescale 2`"
+    },
+    {
+        title: "Set the AI settings to a preset \"easy\" mode.",
+        command: "`attackentity.set_easy_ai`",
+        example: "`attackentity.set_easy_ai`"
+    },
+    {
+        title: "Set the AI settings back to normal.",
+        command: "`attackentity.set_normal_ai`",
+        example: "`attackentity.set_normal_ai`"
+    },
+    {
+        title: "Set the amount of Belt inventory that players can reclaim.",
+        command: "`gamemodesoftcore.reclaim_fraction_belt 0.5`",
+        example: "`gamemodesoftcore.reclaim_fraction_belt 0.3`"
+    },
+    {
+        title: "Set the amount of Main inventory that players can reclaim.",
+        command: "`gamemodesoftcore.reclaim_fraction_main 0.5`",
+        example: "`gamemodesoftcore.reclaim_fraction_main 0.7`"
+    },
+    {
+        title: "Set the amount of Wear inventory that players can reclaim.",
+        command: "`gamemodesoftcore.reclaim_fraction_wear 0`",
+        example: "`gamemodesoftcore.reclaim_fraction_wear 0.2`"
+    },
+    {
+        title: "Set the amount of minutes that players have to reclaim their inventories.",
+        command: "`reclaimmanager.reclaim_expire_minutes 120`",
+        example: "`reclaimmanager.reclaim_expire_minutes 60`"
+    },
+    {
+        title: "Set the range for the nightlight.",
+        command: "`env.nightlight_distance 7`",
+        example: "`env.nightlight_distance 10`"
+    },
+    {
+        title: "Set the brightness of the nightlight.",
+        command: "`env.nightlight_brightness 0.0175`",
+        example: "`env.nightlight_brightness 0.02`"
+    }
+],
+
+"Inventory Commands": [
+    {
+        title: "Add an item to the set of default items that players spawn with.",
+        command: "`inventory.adddefaultitem \"string\"`",
+        example: "`inventory.adddefaultitem \"wooden_spear\"`"
+    },
+    {
+        title: "Clear any items that have been added to the default inventory.",
+        command: "`inventory.cleardefaultitem`",
+        example: "`inventory.cleardefaultitem`"
+    },
+    {
+        title: "Remove an item from the set of default items the players spawn with.",
+        command: "`inventory.removedefaultitem \"string\"`",
+        example: "`inventory.removedefaultitem \"wooden_spear\"`"
+    },
+    {
+        title: "Give yourself an item. You can also add a quantity.",
+        command: "`inventory.give \"string\" \"quantity\"`",
+        example: "`inventory.give \"wooden_spear\" 3`"
+    },
+    {
+        title: "Give everyone an item. You can also add a quantity.",
+        command: "`inventory.giveall \"string\" \"quantity\"`",
+        example: "`inventory.giveall \"wooden_spear\" 2`"
+    },
+    {
+        title: "Drop an item in front of you, instead of adding it to your inventory.",
+        command: "`inventory.givedrop \"string\"`",
+        example: "`inventory.givedrop \"wooden_spear\"`"
+    },
+    {
+        title: "Give a target player an item.",
+        command: "`inventory.giveto \"ID\" \"string\"`",
+        example: "`inventory.giveto \"12345\" \"wooden_spear\"`"
+    },
+    {
+        title: "Reset everyone’s blueprint progress.",
+        command: "`inventory.resetbp`",
+        example: "`inventory.resetbp`"
+    },
+    {
+        title: "Unlock all blueprints for the player who entered the command.",
+        command: "`inventory.unlockall`",
+        example: "`inventory.unlockall`"
+    },
+    {
+        title: "Remove all dropped occurrences of an item.",
+        command: "`inventory.removedroppeditems \"item shortname\"`",
+        example: "`inventory.removedroppeditems \"wooden_spear\"`"
+    }
+],
+"Monument IDs": [
+    {
+        "title": "Dome",
+        "command": "`sphere_tank`",
+        "example": "`sphere_tank`"
+    },
+    {
+        "title": "Small Harbor",
+        "command": "`harbor_1`",
+        "example": "`harbor_1`"
+    },
+    {
+        "title": "Large Harbor",
+        "command": "`harbor_2`",
+        "example": "`harbor_2`"
+    },
+    {
+        "title": "Airfield",
+        "command": "`airfield_1`",
+        "example": "`airfield_1`"
+    },
+    {
+        "title": "Launch",
+        "command": "`launch_site_1`",
+        "example": "`launch_site_1`"
+    },
+    {
+        "title": "Power Plant",
+        "command": "`powerplant_1`",
+        "example": "`powerplant_1`"
+    },
+    {
+        "title": "Train Yard",
+        "command": "`trainyard_1`",
+        "example": "`trainyard_1`"
+    },
+    {
+        "title": "Water Treatment",
+        "command": "`water_treatment_plant_1`",
+        "example": "`water_treatment_plant_1`"
+    },
+    {
+        "title": "LightHouse",
+        "command": "`lighthouse`",
+        "example": "`lighthouse`"
+    },
+    {
+        "title": "Sewer",
+        "command": "`radtown_small_3`",
+        "example": "`radtown_small_3`"
+    },
+    {
+        "title": "Oxums gas station",
+        "command": "`gas_station_1`",
+        "example": "`gas_station_1`"
+    },
+    {
+        "title": "Sulfur Quarry",
+        "command": "`mining_quarry_a`",
+        "example": "`mining_quarry_a`"
+    },
+    {
+        "title": "Stone Quarry",
+        "command": "`mining_quarry_b`",
+        "example": "`mining_quarry_b`"
+    },
+    {
+        "title": "HQM Quarry",
+        "command": "`mining_quarry_c`",
+        "example": "`mining_quarry_c`"
+    },
+    {
+        "title": "Satellite",
+        "command": "`satellite_dish`",
+        "example": "`satellite_dish`"
+    },
+    {
+        "title": "Abandoned Supermarket",
+        "command": "`supermarket_1`",
+        "example": "`supermarket_1`"
+    },
+    {
+        "title": "Large Oil",
+        "command": "`oilrig_1`",
+        "example": "`oilrig_1`"
+    },
+    {
+        "title": "Small Oil",
+        "command": "`oilrig_2`",
+        "example": "`oilrig_2`"
+    },
+    {
+        "title": "Shipping Cargo",
+        "command": "`cargoshipdynamic1`",
+        "example": "`cargoshipdynamic1`"
+    },
+    {
+        "title": "Military Cargo",
+        "command": "`cargoshipdynamic2`",
+        "example": "`cargoshipdynamic2`"
+    },
+    {
+        "title": "Military Tunnel",
+        "command": "`military_tunnel`",
+        "example": "`military_tunnel`"
+    },
+    {
+        "title": "Underwater Lab",
+        "command": "`underwater_lab`",
+        "example": "`underwater_lab`"
+    },
+    {
+        "title": "Water Well A",
+        "command": "`water_well_a`",
+        "example": "`water_well_a`"
+    },
+    {
+        "title": "Water Well B",
+        "command": "`water_well_b`",
+        "example": "`water_well_b`"
+    },
+    {
+        "title": "Water Well C",
+        "command": "`water_well_c`",
+        "example": "`water_well_c`"
+    },
+    {
+        "title": "Water Well D",
+        "command": "`water_well_d`",
+        "example": "`water_well_d`"
+    },
+    {
+        "title": "Water Well E",
+        "command": "`water_well_e`",
+        "example": "`water_well_e`"
+    },
+    {
+        "title": "Mining Outpost",
+        "command": "`warehouse`",
+        "example": "`warehouse`"
+    }
+]
+
+
+
+        };
+
+ // Función para mostrar los botones de categorías con búsqueda global
+function renderCategories() {
+    const categorySelectDiv = document.getElementById('categorySelect');
+    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del buscador
+    categorySelectDiv.innerHTML = ''; // Limpiar los botones anteriores
+    const filteredCategories = [];
+
+    // Filtrar categorías basadas en la búsqueda
+    Object.keys(categories).forEach(category => {
+        const filteredCommands = categories[category].filter(command =>
+            command.title.toLowerCase().includes(searchInput) || 
+            command.command.toLowerCase().includes(searchInput) ||
+            command.example.toLowerCase().includes(searchInput)
+        );
+
+        if (filteredCommands.length > 0 || category.toLowerCase().includes(searchInput)) {
+            filteredCategories.push({ category, filteredCommands });
+        }
+    });
+
+    // Mostrar categorías y comandos filtrados
+    filteredCategories.forEach(({ category, filteredCommands }) => {
+        const button = document.createElement('button');
+        button.textContent = category;
+        button.onclick = () => displayCategoryInfo(category, filteredCommands);
+        categorySelectDiv.appendChild(button);
+    });
+}
+// Función para mostrar los botones de categorías con búsqueda global
+function renderCategories() {
+    const categorySelectDiv = document.getElementById('categorySelect');
+    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del buscador
+    categorySelectDiv.innerHTML = ''; // Limpiar los botones anteriores
+    const filteredCategories = [];
+
+    // Filtrar categorías basadas en la búsqueda
+    Object.keys(categories).forEach(category => {
+        const filteredCommands = categories[category].filter(command =>
+            command.title.toLowerCase().includes(searchInput) || 
+            command.command.toLowerCase().includes(searchInput) ||
+            command.example.toLowerCase().includes(searchInput)
+        );
+
+        // Si la categoría o alguno de sus comandos tiene coincidencias, se agrega a la lista
+        if (filteredCommands.length > 0 || category.toLowerCase().includes(searchInput)) {
+            filteredCategories.push({ category, filteredCommands });
+        }
+    });
+
+    // Mostrar categorías y comandos filtrados
+    filteredCategories.forEach(({ category, filteredCommands }) => {
+        const button = document.createElement('button');
+        button.textContent = category;
+        button.onclick = () => displayCategoryInfo(category, filteredCommands);
+        categorySelectDiv.appendChild(button);
+    });
+
+    // Si hay una búsqueda activa, intenta mostrar los comandos filtrados directamente
+    if (searchInput.length > 0) {
+        const firstFilteredCategory = filteredCategories[0];
+        if (firstFilteredCategory) {
+            displayCategoryInfo(firstFilteredCategory.category, firstFilteredCategory.filteredCommands);
+        }
+    }
+}
+
+// Función para mostrar los botones de categorías con búsqueda global
+function renderCategories() {
+    const categorySelectDiv = document.getElementById('categorySelect');
+    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del buscador
+    categorySelectDiv.innerHTML = ''; // Limpiar los botones anteriores
+    const filteredCategories = [];
+
+    console.log("Búsqueda actual:", searchInput); // Verificación de lo que se está buscando
+
+    // Filtrar categorías basadas en la búsqueda
+    Object.keys(categories).forEach(category => {
+        console.log("Filtrando categoría:", category); // Depuración para ver las categorías
+
+        const filteredCommands = categories[category].filter(command =>
+            command.title.toLowerCase().includes(searchInput) || 
+            command.command.toLowerCase().includes(searchInput) ||
+            command.example.toLowerCase().includes(searchInput)
+        );
+
+        // Si la categoría o alguno de sus comandos tiene coincidencias, se agrega a la lista
+        if (filteredCommands.length > 0 || category.toLowerCase().includes(searchInput)) {
+            filteredCategories.push({ category, filteredCommands });
+        }
+    });
+
+    // Verificar si las categorías fueron filtradas correctamente
+    console.log("Categorías filtradas:", filteredCategories);
+
+    // Mostrar categorías y comandos filtrados
+    filteredCategories.forEach(({ category, filteredCommands }) => {
+        const button = document.createElement('button');
+        button.textContent = category;
+        button.onclick = () => displayCategoryInfo(category, filteredCommands);
+        categorySelectDiv.appendChild(button);
+    });
+
+    // Si hay una búsqueda activa, intenta mostrar los comandos filtrados directamente
+    if (searchInput.length > 0 && filteredCategories.length > 0) {
+        const firstFilteredCategory = filteredCategories[0];
+        if (firstFilteredCategory) {
+            displayCategoryInfo(firstFilteredCategory.category, firstFilteredCategory.filteredCommands);
+        }
+    }
+}
+
+// Función para mostrar los botones de categorías con búsqueda global
+function renderCategories() {
+    const categorySelectDiv = document.getElementById('categorySelect');
+    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del buscador
+    const infoContainer = document.getElementById('info-container');
+    categorySelectDiv.innerHTML = ''; // Limpiar los botones anteriores
+    infoContainer.innerHTML = ''; // Limpiar los resultados anteriores
+
+    // Crear los botones de categorías
+    Object.keys(categories).forEach(category => {
+        const button = document.createElement('button');
+        button.textContent = category;
+        button.onclick = () => displayCategoryInfo(category, searchInput);
+        categorySelectDiv.appendChild(button);
+    });
+}
+
+// Función para mostrar los botones de categorías con búsqueda global
+function renderCategories() {
+    const categorySelectDiv = document.getElementById('categorySelect');
+    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del buscador
+    const infoContainer = document.getElementById('info-container');
+    categorySelectDiv.innerHTML = ''; // Limpiar los botones anteriores
+    infoContainer.innerHTML = ''; // Limpiar los resultados anteriores
+
+    // Mostrar los botones de categorías
+    Object.keys(categories).forEach(category => {
+        const button = document.createElement('button');
+        button.textContent = category;
+        button.onclick = () => displayCategoryInfo(category, searchInput); // Cuando se hace clic, se muestran los comandos de esa categoría
+        categorySelectDiv.appendChild(button);
+    });
+}
+
+// Función para mostrar los botones de categorías con búsqueda global
+function renderCategories() {
+    const categorySelectDiv = document.getElementById('categorySelect');
+    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del buscador
+    const infoContainer = document.getElementById('info-container');
+    categorySelectDiv.innerHTML = ''; // Limpiar los botones anteriores
+    infoContainer.innerHTML = ''; // Limpiar los resultados anteriores
+
+    // Mostrar los botones de categorías
+    Object.keys(categories).forEach(category => {
+        const button = document.createElement('button');
+        button.textContent = category;
+        button.onclick = () => {
+            // Al hacer clic, mostramos los comandos de esa categoría
+            displayCategoryInfo(category, searchInput); 
+        };
+        categorySelectDiv.appendChild(button);
+    });
+}
+
+// Función para mostrar la información de la categoría seleccionada con los comandos filtrados
+function displayCategoryInfo(category, searchInput) {
+    const infoContainer = document.getElementById('info-container');
+    infoContainer.innerHTML = `<h2>${category}</h2>`; // Título de la categoría
+
+    // Filtrar los comandos de la categoría seleccionada según la búsqueda global
+    const filteredCommands = categories[category].filter(command =>
+        command.title.toLowerCase().includes(searchInput) ||
+        command.command.toLowerCase().includes(searchInput) ||
+        command.example.toLowerCase().includes(searchInput)
+    );
+
+    // Mostrar los comandos filtrados
+    filteredCommands.forEach(command => {
+        const commandDiv = document.createElement('div');
+        commandDiv.classList.add('command');
+
+        const commandTitle = document.createElement('p');
+        commandTitle.classList.add('command-title');
+        commandTitle.innerHTML = highlightText(command.title);
+
+        const commandDetails = document.createElement('p');
+        commandDetails.classList.add('command-details');
+        commandDetails.innerHTML = `Command: <code>${highlightText(command.command)}</code><br>Example: <code>${highlightText(command.example)}</code>`;
+
+        commandDiv.appendChild(commandTitle);
+        commandDiv.appendChild(commandDetails);
+        infoContainer.appendChild(commandDiv);
+    });
+
+    // Si no se encuentran resultados, mostrar todos los comandos de la categoría
+    if (filteredCommands.length === 0 && searchInput !== "") {
+        infoContainer.innerHTML += '<p>No se encontraron comandos que coincidan con la búsqueda.</p>';
+    }
+}
+
+// Función para resaltar las coincidencias del texto de búsqueda
+function highlightText(text) {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    if (!searchInput) return text; // Si no hay búsqueda, no hace nada
+    const regex = new RegExp(`(${searchInput})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+}
+
+// Función para realizar una búsqueda global sin necesidad de seleccionar una categoría
+function globalSearch() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const infoContainer = document.getElementById('info-container');
+    const selectedCategory = document.querySelector('button.selected-category')?.textContent; // Obtener la categoría seleccionada
+    infoContainer.innerHTML = ''; // Limpiar los resultados anteriores
+
+    if (searchInput === "") {
+        // Si no hay texto en el buscador, simplemente mostramos la categoría seleccionada
+        if (selectedCategory) {
+            displayCategoryInfo(selectedCategory, searchInput);
+        }
+    } else {
+        // Si hay texto en el buscador, hacemos la búsqueda global
+        Object.keys(categories).forEach(category => {
+            const filteredCommands = categories[category].filter(command =>
+                command.title.toLowerCase().includes(searchInput) ||
+                command.command.toLowerCase().includes(searchInput) ||
+                command.example.toLowerCase().includes(searchInput)
+            );
+
+            if (filteredCommands.length > 0) {
+                // Si hay comandos que coinciden, mostrar la categoría
+                const categoryHeader = document.createElement('h2');
+                categoryHeader.textContent = category;
+                infoContainer.appendChild(categoryHeader);
+
+                // Mostrar los comandos filtrados de esta categoría
+                filteredCommands.forEach(command => {
+                    const commandDiv = document.createElement('div');
+                    commandDiv.classList.add('command');
+
+                    const commandTitle = document.createElement('p');
+                    commandTitle.classList.add('command-title');
+                    commandTitle.innerHTML = highlightText(command.title);
+
+                    const commandDetails = document.createElement('p');
+                    commandDetails.classList.add('command-details');
+                    commandDetails.innerHTML = `Command: <code>${highlightText(command.command)}</code><br>Example: <code>${highlightText(command.example)}</code>`;
+
+                    commandDiv.appendChild(commandTitle);
+                    commandDiv.appendChild(commandDetails);
+                    infoContainer.appendChild(commandDiv);
+                });
+            }
+        });
+
+        // Si no hay resultados, mostrar mensaje
+        if (infoContainer.innerHTML === '') {
+            infoContainer.innerHTML = '<p>No se encontraron resultados para la búsqueda.</p>';
+        }
+    }
+}
+
+// Agregar un evento al input de búsqueda para que actualice las categorías y comandos mientras escribes
+document.getElementById('searchInput').addEventListener('input', globalSearch);
+
+// Inicializar la página con las categorías
+renderCategories();
+
+    </script>
+</body>
+</html>
